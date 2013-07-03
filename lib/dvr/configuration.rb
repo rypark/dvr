@@ -11,7 +11,7 @@ module DVR
       @dvd_library_dir = dir ? absolute_path_for(dir) : nil
     end
 
-    def service_host=(url = 'localhost:9393')
+    def service_host=(url = 'http://localhost:9393')
       @service_host = url
     end
 
