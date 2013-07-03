@@ -1,0 +1,5 @@
+{"links" : [
+  {"rel":"agencies","href":"http://localhost:9393/agencies"},
+  {"rel":"search_form","href":"http://localhost:9393/start-search"}
+  ]
+}
