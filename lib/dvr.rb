@@ -5,6 +5,7 @@ require_relative "dvr/dvd"
 require_relative "dvr/requester"
 require_relative "dvr/core_ext/array"
 require_relative "dvr/core_ext/hash"
+require_relative "dvr/util/query_params"
 
 module DVR
 

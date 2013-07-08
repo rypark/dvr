@@ -6,7 +6,7 @@ module DVR
     attr_reader :response
 
     # 1. Make request
-    # 2. Save to dvd if it doesn't already exist
+    # 2. Save response to dvd if it doesn't already exist
     def self.make(options)
       req = new(options)
       req.get_response
@@ -22,11 +22,8 @@ module DVR
     end
 
     def get_response
-      uri  = URI("#{DVR.configuration.service_host}#{@url}")
-      http = Net::HTTP.new(uri.hostname, uri.port)
-
+      http      = Net::HTTP.new(uri.hostname, uri.port)
       request   = request_class.new(uri)
-      request.set_form_data(@params) if @params.any?
       @response = http.request(request)
     end
 
@@ -35,6 +32,14 @@ module DVR
     end
 
     private
+
+    def uri
+      @uri ||= -> {
+        path = "#{DVR.configuration.service_host}#{@url}"
+        path << '?' + DVR::Util::QueryParams.encode(@params) if @params.any?
+        URI(path)
+      }.call
+    end
 
     def request_class
       Kernel.const_get("Net::HTTP::#{@method.to_s.capitalize}")

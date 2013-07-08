@@ -21,23 +21,17 @@ module DVR
               'name'     => 'departure_time',
               'type'     => 'datetime',
               'label'    => 'Departure Time',
-              'required' => true
+              'required' => 'true'
             }
           ]
         }
       })
     end
 
-    get '/something-with-params' do
-      "query: #{params[:q]}"
-    end
-
-    get '/foo' do
-      "FOO!"
-    end
-
-    post '/foo' do
-      "FOO!"
+    post '/post-an-animal' do
+      json({
+        'animal' => params['animal']
+      })
     end
 
     get '/set-cookie-headers/1' do

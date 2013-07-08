@@ -27,4 +27,19 @@ describe DVR::Requester do
     requester.response.body.must_equal expected_response
   end
 
+  it "makes post request" do
+    form_args = {
+      'animal' => {'name'     => 'cat',
+                   'whiskers' => 'true'}
+    }
+    dvd = DVR::Dvd.new('post-an-animal')
+    requester = DVR::Requester.make(
+      dvd: dvd,
+      url: '/post-an-animal',
+      method: :post,
+      params: form_args)
+    requester.send(:request_class).must_equal Net::HTTP::Post
+    requester.response.body.must_equal form_args.to_json
+  end
+
 end
