@@ -1,20 +1,35 @@
 require 'sinatra'
+require 'sinatra/json'
+require 'multi_json'
 
 module DVR
   class SinatraApp < ::Sinatra::Base
+    helpers Sinatra::JSON
     disable :protection
 
-    # TODO JSON responses!
     get '/' do
-      "GET to root"
+      json({'animals' => ['cat', 'dog', 'chinchilla']})
     end
 
-    get '/search' do
+    get '/start-search' do
+      json({
+        'form' => {
+          'action' => '/start-search',
+          'method' => 'POST',
+          'fields' => [
+            {
+              'name'     => 'departure_time',
+              'type'     => 'datetime',
+              'label'    => 'Departure Time',
+              'required' => true
+            }
+          ]
+        }
+      })
+    end
+
+    get '/something-with-params' do
       "query: #{params[:q]}"
-    end
-
-    get '/localhost_test' do
-      "Localhost response"
     end
 
     get '/foo' do
