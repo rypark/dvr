@@ -64,4 +64,13 @@ describe DVR::Dvd do
 
   end
 
+  describe "error handling" do
+
+    it "raises NonJsonResponse if response body isn't valid json" do
+      -> { dvd.save_to_file("<!DOCTYPE html><html></html>") }
+      .must_raise(DVR::NonJsonResponse)
+    end
+
+  end
+
 end

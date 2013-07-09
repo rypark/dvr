@@ -1,6 +1,6 @@
 # Dvr
 
-TODO: Write a gem description
+Record interactions with services and verify that their json response structure does not change over time.
 
 ## Installation
 
@@ -29,8 +29,8 @@ DVR.verify('root', url: '/').must_equal true
 
 # with params:
 search = FactoryGirl.create(:search)
-DVR.verify('receive-results', url: 'receive-results', params: {id: search.id}).must_equal true
+DVR.verify('receive-results', url: '/receive-results', params: {id: search.id}).must_equal true
 
 # post:
-DVR.verify('start-search', url: 'start-search', method: :post).must_equal true
+DVR.verify('start-search', url: '/start-search', method: :post).must_equal true
 ````

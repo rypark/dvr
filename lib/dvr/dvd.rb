@@ -15,8 +15,12 @@ module DVR
     def save_to_file(response_body)
       return false if persisted?
       File.open(file_path, 'w') { |f|
-        json_body = JSON.parse(response_body)
-        f.write JSON.pretty_generate(json_body)
+        begin
+          json_body = JSON.parse(response_body)
+          f.write JSON.pretty_generate(json_body)
+        rescue JSON::ParserError
+          raise DVR::NonJsonResponse
+        end
       }
       true
     end
@@ -36,8 +40,8 @@ module DVR
       if body_hash.deep_keys == response_hash.deep_keys
         true
       else
-        @error_message = "Expected:\n#{body_hash.deep_keys.inspect}" +
-                         "\nActual:\n#{response_hash.deep_keys.inspect}"
+        @error_message = "Expected:\n#{body_hash.deep_keys.inspect}\n" +
+                         "Actual:\n#{response_hash.deep_keys.inspect}"
         false
       end
     end

@@ -16,7 +16,8 @@ module DVR
 
     def initialize(options)
       @dvd    = options[:dvd]
-      @url    = options[:url]    || ''
+      @url    = options[:url]    || '/'
+      @url    = @url.insert(0, '/') unless @url[0] == '/'
       @params = options[:params] || { }
       @method = options[:method] || :get
     end
@@ -24,7 +25,11 @@ module DVR
     def get_response
       http      = Net::HTTP.new(uri.hostname, uri.port)
       request   = request_class.new(uri)
-      @response = http.request(request)
+      begin
+        @response = http.request(request)
+      rescue Errno::ECONNREFUSED
+        raise DVR::HostNotFound
+      end
     end
 
     def save_response_to_dvd

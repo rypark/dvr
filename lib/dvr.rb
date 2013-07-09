@@ -3,6 +3,7 @@ require_relative "dvr/version"
 require_relative "dvr/configuration"
 require_relative "dvr/dvd"
 require_relative "dvr/requester"
+require_relative "dvr/errors"
 require_relative "dvr/core_ext/array"
 require_relative "dvr/core_ext/hash"
 require_relative "dvr/util/query_params"
@@ -27,7 +28,7 @@ module DVR
     #   params: {'id' => search.id} #params for path)
     def verify(dvd_name, url: nil, params: {}, method: :get)
       dvd      = Dvd.new(dvd_name)
-      request  = Requester.make(dvd: dvd, url: url, params: {}, method: method)
+      request  = Requester.make(dvd: dvd, url: url, params: params, method: method)
       response = request.response
       dvd.structure_eq_to?(response.body) ? true : dvd.error_message
     end

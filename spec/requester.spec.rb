@@ -27,6 +27,13 @@ describe DVR::Requester do
     requester.response.body.must_equal expected_response
   end
 
+  it "adds params to url" do
+    expected_response = '{"animals":["cat","dog","chinchilla"]}'
+    dvd.expect(:save_to_file, true, [expected_response])
+    requester = DVR::Requester.make(dvd: dvd, url: '/', params: {'a' => 'b'})
+    requester.send(:uri).to_s.must_match /\?a=b$/
+  end
+
   it "makes post request" do
     form_args = {
       'animal' => {'name'     => 'cat',
@@ -40,6 +47,16 @@ describe DVR::Requester do
       params: form_args)
     requester.send(:request_class).must_equal Net::HTTP::Post
     requester.response.body.must_equal form_args.to_json
+  end
+
+  describe "error handling" do
+
+    it "raises HostNotFound if service_host is wrong" do
+      DVR.configure { |c| c.service_host = "http://localhost:1" }
+      -> { DVR::Requester.make(dvd: dvd, url: '/') }
+        .must_raise(DVR::HostNotFound)
+    end
+
   end
 
 end

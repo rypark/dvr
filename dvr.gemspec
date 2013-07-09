@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'dvr/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "DVR"
+  spec.name          = "dvr"
   spec.version       = DVR::VERSION
   spec.authors       = ["Ryan Parker"]
   spec.email         = ["rypark09@gmail.com"]
