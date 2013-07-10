@@ -30,7 +30,7 @@ module DVR
       dvd      = Dvd.new(dvd_name)
       request  = Requester.make(dvd: dvd, url: url, params: params, method: method)
       response = request.response
-      dvd.structure_eq_to?(response.body) ? true : dvd.error_message
+      dvd.compare!(response.body) ? true : dvd.error_message
     end
 
   end

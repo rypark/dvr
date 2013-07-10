@@ -47,8 +47,9 @@ describe DVR::Dvd do
 
   end
 
-  describe "#structure_eq_to?" do
+  describe "#compare!" do
 
+    # TODO this could use some cleaning
     it "compares structure of response json" do
       dvd_body = {
         'animals' => %w[lion tiger bear]
@@ -58,7 +59,54 @@ describe DVR::Dvd do
       }.to_json
 
       dvd.stub(:body, dvd_body) do
-        dvd.structure_eq_to?(response_body).must_equal true
+        dvd.compare!(response_body).must_equal true
+      end
+    end
+
+    it "correctly compares array" do
+      dvd_body = [
+        {'name' => 'lion'},
+        {'name' => 'tiger'},
+        {'name' => 'bear'},
+      ].to_json
+      response_body = [
+        {'name' => 'lemur'}
+      ].to_json
+
+      dvd.stub(:body, dvd_body) do
+        dvd.compare!(response_body).must_equal true
+      end
+    end
+
+    it "resaves to dvd when new structure has been added" do
+      dvd_body = {
+        'animals' => %w[lion tiger bear]
+      }.to_json
+      response_body = {
+        'animals' => %w[cat dog chinchilla],
+        'fruits'  => %w[apple peache pear]
+      }.to_json
+
+      dvd.stub(:body, dvd_body) do
+        dvd.compare!(response_body).must_equal true
+        assert_send [dvd, :save_to_file, response_body, force: true]
+      end
+    end
+
+    it "returns false when structure has been subtracted" do
+      dvd_body = {
+        'animals' => [
+          {'id' => 1, 'name' => 'lion'}
+        ]
+      }.to_json
+      response_body = {
+        'animals' => [
+          {'name' => 'lion'}
+        ]
+      }.to_json
+
+      dvd.stub(:body, dvd_body) do
+        dvd.compare!(response_body).must_equal false
       end
     end
 

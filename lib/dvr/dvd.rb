@@ -12,8 +12,8 @@ module DVR
       File.exist?(file_path)
     end
 
-    def save_to_file(response_body)
-      return false if persisted?
+    def save_to_file(response_body, force: false)
+      return false if persisted? && !force
       File.open(file_path, 'w') { |f|
         begin
           json_body = JSON.parse(response_body)
@@ -34,14 +34,15 @@ module DVR
       DVR.configuration.dvd_library_dir + '/' + @name + '.json'
     end
 
-    def structure_eq_to?(response_body)
-      body_hash           =  JSON.parse(body)
-      response_hash       =  JSON.parse(response_body)
-      if body_hash.deep_keys == response_hash.deep_keys
+    def compare!(response_body)
+      body_keys        = JSON.parse(body).deep_keys
+      response_keys    = JSON.parse(response_body).deep_keys
+      if body_keys.ensure_no_subtractions(response_keys)
+        save_to_file(response_body, force: true) if body_keys != response_keys
         true
       else
-        @error_message = "Expected:\n#{body_hash.deep_keys.inspect}\n" +
-                         "Actual:\n#{response_hash.deep_keys.inspect}"
+        @error_message = "Expected:\n#{body_keys.inspect}\n" +
+                         "Actual:\n#{body_keys.inspect}"
         false
       end
     end

@@ -14,7 +14,7 @@ class Hash
     if result.count > 1
       result.map { |k, v| v ? {k => v} : k }
     else
-      result.values != [nil] ? result : [result.keys[0]]
+      result.values != [nil] ? [result] : [result.keys[0]]
     end
   end
 
