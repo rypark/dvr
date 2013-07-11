@@ -6,5 +6,7 @@ module DVR
       result == true ? pass : flunk(result)
     end
 
+    alias_method :verify_dvr, :assert_dvr_response
+
   end
 end

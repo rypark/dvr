@@ -27,6 +27,10 @@ describe Minitest do
       ex.message.must_equal msg
     end
 
+    it "aliases to verify_dvr" do
+      verify_dvr 'root', url: '/'
+    end
+
   end
 
 end

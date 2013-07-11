@@ -4,8 +4,8 @@ module DVR
   module RSpecHelpers
 
     # A shortcut so we don't have to type DVR.verify() for every test.
-    def expect_dvr(filename, options = {})
-      expect DVR.verify(filename, options)
+    def verify_dvr(filename, options = {})
+      expect(DVR.verify(filename, options)).to be_a_valid_response
     end
 
     RSpec::Matchers.define :be_a_valid_response do
