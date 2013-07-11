@@ -41,8 +41,8 @@ module DVR
         save_to_file(response_body, force: true) if body_keys != response_keys
         true
       else
-        @error_message = "Expected:\n#{body_keys.inspect}\n" +
-                         "Actual:\n#{body_keys.inspect}"
+        @error_message = "Expected:\n-#{body_keys.inspect}\n" +
+                         "Actual:\n+#{response_keys.inspect}"
         false
       end
     end

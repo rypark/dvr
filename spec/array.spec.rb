@@ -43,6 +43,11 @@ describe Array do
       deep_keys.ensure_no_subtractions(new_deep_keys).must_equal false
     end
 
+    it "handles empty hashes" do
+      deep_keys = [ { } ]
+      deep_keys.ensure_no_subtractions(deep_keys).must_equal true
+    end
+
   end
 
 end

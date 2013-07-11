@@ -19,7 +19,11 @@ class Array
         other.include?(elem)
       when Hash
         match = other.find { |e|e.is_a?(Hash) && e.keys[0] == elem.keys[0] }
-        match ? elem.values[0].ensure_no_subtractions(match.values[0]) : false
+        if match
+          elem.values.any? ? elem.values[0].ensure_no_subtractions(match.values[0]) : true
+        else
+          false
+        end
       end
     end
     bools.all?
