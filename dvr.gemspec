@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec",           "~> 2.14.1"
   spec.add_development_dependency "sinatra",         "~> 1.4.3"
   spec.add_development_dependency "sinatra-contrib", "~> 1.4.0"
+  spec.add_development_dependency "rack-test",       "~> 0.6.2"
   spec.add_development_dependency "json",            "~> 1.8.0"
   spec.add_development_dependency "multi_json",      "~> 1.7.7"
 

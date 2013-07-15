@@ -8,16 +8,14 @@ require 'fileutils'
 module DVR
   class Configuration
 
-    attr_reader :dvd_library_dir,
-                :service_host
+    attr_reader   :dvd_library_dir
+    attr_accessor :service,
+                  :service_host,
+                  :requester_class
 
     def dvd_library_dir=(dir)
       FileUtils.mkdir_p(dir) if dir
       @dvd_library_dir = dir ? absolute_path_for(dir) : nil
-    end
-
-    def service_host=(url = 'http://localhost:9393')
-      @service_host = url
     end
 
     private

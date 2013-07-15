@@ -51,6 +51,11 @@ module DVR
     @_boot_failed = false
 
     class << self
+
+      def app
+        self
+      end
+
       def port
         server.port
       end

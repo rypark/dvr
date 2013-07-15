@@ -3,6 +3,7 @@ require_relative "dvr/version"
 require_relative "dvr/configuration"
 require_relative "dvr/dvd"
 require_relative "dvr/requester"
+require_relative "dvr/requesters/rack_test_requester"
 require_relative "dvr/errors"
 require_relative "dvr/core_ext/array"
 require_relative "dvr/core_ext/hash"
@@ -19,6 +20,12 @@ module DVR
       @configuration ||= Configuration.new
     end
 
+    def requester_class
+      @requester_class ||= (
+        configuration.requester_class || Requester
+      )
+    end
+
     # Verify that a current response's structure
     # matches that of the old saved response.
     # Example usage:
@@ -28,7 +35,7 @@ module DVR
     #   params: {'id' => search.id} #params for path)
     def verify(dvd_name, url: nil, params: {}, method: :get)
       dvd      = Dvd.new(dvd_name)
-      request  = Requester.make(dvd: dvd, url: url, params: params, method: method)
+      request  = requester_class.make(dvd: dvd, url: url, params: params, method: method)
       response = request.response
       dvd.compare!(response.body) ? true : dvd.error_message
     end
