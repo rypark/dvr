@@ -6,7 +6,7 @@ module DVR
     include Rack::Test::Methods
 
     def service
-      DVR.configuration.service
+      DVR.configuration.rack_test_service
     end
 
     def app

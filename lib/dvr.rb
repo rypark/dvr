@@ -22,7 +22,7 @@ module DVR
 
     def requester_class
       @requester_class ||= (
-        configuration.requester_class || Requester
+        configuration.rack_test_service ? RackTestRequester : Requester
       )
     end
 

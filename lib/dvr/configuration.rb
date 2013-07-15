@@ -9,9 +9,8 @@ module DVR
   class Configuration
 
     attr_reader   :dvd_library_dir
-    attr_accessor :service,
-                  :service_host,
-                  :requester_class
+    attr_accessor :rack_test_service,
+                  :service_host
 
     def dvd_library_dir=(dir)
       FileUtils.mkdir_p(dir) if dir

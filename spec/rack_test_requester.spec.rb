@@ -16,8 +16,8 @@ describe DVR::RackTestRequester do
 
   before do
     DVR.configure do |c|
-      c.dvd_library_dir = tmp_dir
-      c.service = DVR::SinatraApp
+      c.dvd_library_dir   = tmp_dir
+      c.rack_test_service = DVR::SinatraApp
     end
   end
 
