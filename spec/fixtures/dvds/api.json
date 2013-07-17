@@ -1,0 +1,8 @@
+{
+  "links": [
+    {
+      "rel": "form_1",
+      "href": "http://localhost:56297/api/form_1"
+    }
+  ]
+}

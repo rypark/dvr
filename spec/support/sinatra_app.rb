@@ -34,18 +34,36 @@ module DVR
       })
     end
 
-    get '/set-cookie-headers/1' do
-      headers 'Set-Cookie' => 'foo'
-      'header set'
+    get '/api' do
+      json({
+        'links' => [
+          {'rel'  => 'form_1',
+           'href' => link_to('/api/form_1')}
+        ]
+      })
     end
 
-    get '/set-cookie-headers/2' do
-      headers 'Set-Cookie' => %w[ bar foo ]
-      'header set'
+    get '/api/form_1' do
+      json({
+        'required' => %w[id name]
+      })
+    end
+
+    get '/api_with_changes' do
+      json({
+        'links' => [
+          {'rel'  => 'changed_form',
+           'href' => link_to('/api/form_1')}
+        ]
+      })
     end
 
     get '/204' do
       status 204
+    end
+
+    def link_to(str)
+      "#{request.scheme}://#{request.host}:#{SinatraApp.port}#{str}"
     end
 
     @_boot_failed = false

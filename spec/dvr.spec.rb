@@ -22,4 +22,18 @@ describe DVR do
 
   end
 
+  describe ".verify_all" do
+
+    it "verifies all links" do
+      DVR.verify_all('api', url: '/api').must_equal true
+    end
+
+    it "returns error messages when there are changes" do
+      -> {DVR.verify_all('api_with_changes', url: '/api_with_changes')
+            .must_equal true}
+      .must_raise(Minitest::Assertion)
+    end
+
+  end
+
 end

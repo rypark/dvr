@@ -40,6 +40,23 @@ module DVR
       dvd.compare!(response.body) ? true : dvd.error_message
     end
 
+    def verify_all(dvd_name, url: nil, params: {}, method: :get)
+      errors = []
+      dvd      = Dvd.new(dvd_name)
+      request  = requester_class.make(dvd: dvd, url: url, params: params, method: method)
+      response = request.response
+      dvd.compare!(response.body) ? true : (errors << dvd.error_message)
+      links = JSON.parse(response.body)['links']
+      if links
+        links.each do |h|
+          url = h['href'].sub(/http:\/\/[^\/]+/, '')
+          result = verify_all(h['rel'], url: url)
+          errors.concat(result) unless result == true
+        end
+      end
+      errors.none? ? true : errors
+    end
+
   end
 
 end
