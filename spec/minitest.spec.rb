@@ -19,12 +19,30 @@ describe Minitest do
     it "returns error message when response not right" do
       ex = ->{ assert_dvr_response 'root', url: '/start-search' }
       .must_raise(Minitest::Assertion)
-      msg = "Unexpected response for root:\n"        +
-            "Expected:\n"                            +
-            "-[\"animals\"]\n"                       +
-            "Actual:\n"                              +
-            "+[{\"form\"=>[\"action\", \"method\", " +
-            "{\"fields\"=>[\"name\", \"type\", \"label\", \"required\"]}]}]"
+      msg = <<-END
+Unexpected response for root:
+--- expected
++++ actual
+@@ -1,3 +1,16 @@
+ [
+-  "animals"
++  {
++    "form": [
++      "action",
++      "method",
++      {
++        "fields": [
++          "name",
++          "type",
++          "label",
++          "required"
++        ]
++      }
++    ]
++  }
+ ]
+      END
+
       ex.message.must_equal msg
     end
 
@@ -43,11 +61,17 @@ describe Minitest do
     it "returns error message when response not right" do
       ex = ->{ assert_all_dvr_response 'api_with_changes', url: '/api_with_changes'}
       .must_raise(Minitest::Assertion)
-      msg = "Unexpected response for changed_form:\n" +
-            "Expected:\n"                             +
-            "-[\"i_am_different\"]\n"                 +
-            "Actual:\n"                               +
-            "+[\"required\"]"
+      msg = <<-END
+Unexpected response for changed_form:
+--- expected
++++ actual
+@@ -1,3 +1,3 @@
+ [
+-  "i_am_different"
++  "required"
+ ]
+      END
+
       ex.message.must_equal msg
     end
 

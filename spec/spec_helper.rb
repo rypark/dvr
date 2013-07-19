@@ -1,5 +1,7 @@
 ENV['RACK_ENV'] = 'test'
 
+require 'bundler/setup'
+
 require_relative '../lib/dvr'
 
 require_relative 'support/sinatra_app'

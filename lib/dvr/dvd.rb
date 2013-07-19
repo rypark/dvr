@@ -2,6 +2,8 @@ require 'json'
 module DVR
   class Dvd
 
+    include DVR::Diff
+
     attr_accessor :name, :error_message
 
     def initialize(name, options = {})
@@ -41,9 +43,10 @@ module DVR
         save_to_file(response_body, force: true) if body_keys != response_keys
         true
       else
-        @error_message = "Unexpected response for #{@name}:\n" +
-                         "Expected:\n-#{body_keys.inspect}\n" +
-                         "Actual:\n+#{response_keys.inspect}"
+        @error_message = [
+          "Unexpected response for #{@name}:",
+          diff(body_keys, response_keys),
+        ].join("\n")
         false
       end
     end

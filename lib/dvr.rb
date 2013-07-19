@@ -1,3 +1,5 @@
+Dir.glob(__dir__ + '/dvr/util/**/*.rb', &method(:require))
+
 require_relative "dvr/version"
 
 require_relative "dvr/configuration"
@@ -7,7 +9,6 @@ require_relative "dvr/requesters/rack_test_requester"
 require_relative "dvr/errors"
 require_relative "dvr/core_ext/array"
 require_relative "dvr/core_ext/hash"
-require_relative "dvr/util/query_params"
 
 module DVR
 
