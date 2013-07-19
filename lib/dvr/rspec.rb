@@ -18,7 +18,12 @@ module DVR
       end
 
       failure_message_for_should do |result|
-        result.join("\n--------------------------\n")
+        case result
+        when String
+          result
+        when Array
+          result.join("\n--------------------------\n")
+        end
       end
 
       failure_message_for_should_not do |result|
