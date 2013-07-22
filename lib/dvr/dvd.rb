@@ -16,14 +16,14 @@ module DVR
 
     def save_to_file(response_body, force: false)
       return false if persisted? && !force
-      File.open(file_path, 'w') { |f|
-        begin
-          json_body = JSON.parse(response_body)
+      begin
+        json_body = JSON.parse(response_body)
+        File.open(file_path, 'w') { |f|
           f.write JSON.pretty_generate(json_body)
-        rescue JSON::ParserError
-          raise DVR::NonJsonResponse
-        end
-      }
+        }
+      rescue
+        raise DVR::NonJsonResponse
+      end
       true
     end
 

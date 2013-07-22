@@ -1,10 +1,5 @@
 require 'fileutils'
 
-# TODO maybe an :api_key option that would automatically append it
-#      to all requests. To avoid pesky NotAuthorized errors.
-#      If so, remember to take Requester#uri into account, otherwise
-#      we'll end up with a url with two '?'s in it.
-#      (just do path << DVR.configuration.api_key if there is one)
 module DVR
   class Configuration
 
