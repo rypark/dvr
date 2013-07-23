@@ -14,5 +14,9 @@ module DVR
     alias_method :verify_dvr, :assert_dvr_response
     alias_method :verify_all_dvr, :assert_all_dvr_response
 
+    Minitest.after_run {
+      puts DVR.after_test_message
+    }
+
   end
 end

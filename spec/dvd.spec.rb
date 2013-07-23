@@ -110,6 +110,40 @@ describe DVR::Dvd do
       end
     end
 
+    it "checks content when dvd includes a form" do
+      dvd_body = {
+        "form" => {
+          "fields" => [
+            {
+              "name" => "slug",
+              "type" => "string",
+            },
+            {
+              "name" => "domain",
+              "type" => "string",
+            }
+          ]
+        }
+      }.to_json
+      response_body = {
+        "form" => {
+          "fields" => [
+            {
+              "name" => "slug",
+              "type" => "string",
+            },
+            {
+              "name" => "i_changed",
+              "type" => "string",
+            }
+          ]
+        }
+      }.to_json
+      dvd.stub(:body, dvd_body) do
+        dvd.compare!(response_body, verify_content: true).must_equal false
+      end
+    end
+
   end
 
   describe "error handling" do

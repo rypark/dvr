@@ -12,6 +12,12 @@ module DVR
       expect(DVR.verify_all(filename, options)).to be_a_valid_response
     end
 
+    RSpec.configure do |c|
+      c.after(:suite) do
+        puts DVR.after_test_message
+      end
+    end
+
     RSpec::Matchers.define :be_a_valid_response do
       match do |result|
         result == true

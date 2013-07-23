@@ -16,7 +16,7 @@ describe DVR do
     end
 
     it "returns error message when there are changes" do
-      -> {DVR.verify('example', url: '/').must_equal true}
+      -> {DVR.verify('api', url: '/').must_equal true}
       .must_raise(Minitest::Assertion)
     end
 
@@ -32,6 +32,33 @@ describe DVR do
       -> {DVR.verify_all('api_with_changes', url: '/api_with_changes')
             .must_equal true}
       .must_raise(Minitest::Assertion)
+    end
+
+  end
+
+  describe ".after_test_message" do
+
+    let(:tmp_dir) {
+      File.join(
+        DVR::SPEC_ROOT,
+        '/../tmp/dvr_library_dir/new_dir'
+      )
+    }
+    before {
+      DVR.configure do |c|
+        c.dvd_library_dir = tmp_dir
+      end
+    }
+
+    after(:each)  { FileUtils.rm_rf tmp_dir }
+
+    it "is blank if no untested files" do
+      DVR.after_test_message.must_equal ''
+    end
+
+    it "exists if there are untested files" do
+      File.open("#{tmp_dir}/unnecessary_dvd.json", 'w') { }
+      DVR.after_test_message.must_match /unnecessary_dvd.json/
     end
 
   end
