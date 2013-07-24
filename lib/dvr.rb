@@ -52,13 +52,14 @@ module DVR
 
     # Similar to .verify, but will follow all links and verify them recursively.
     # Intended to be used from the root of a hypermedia service.
-    def verify_all(dvd_name, url: nil, params: {}, method: :get)
+    def verify_all(dvd_name, url: nil, params: {}, method: :get, verify_content: nil)
       errors = []
       comparer = Comparer.new(
         dvd_name,
         url: url,
         params: params,
-        method: method
+        method: method,
+        verify_content: verify_content
       )
       unless comparer.run
         errors << comparer.error_message

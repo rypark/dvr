@@ -38,11 +38,21 @@ end
 
 ## Testing
 
-Regardless of testing framework, the command stays the same:
+Regardless of testing framework, the commands stay the same:
+
+To verify one action:
 
     verify_dvr dvd_name, options
 
-Options are: :url, :params, & :method.
+To start at an endpoint and verify all links contained within (helpful for starting at the root of a service and following all links):
+
+    verify_all_dvr dvd_name, options
+
+Options are: :url, :params, :method, & :verify_content.
+`:url`    - `'/'`, `'/some_resource'`, etc.
+`:params` - `{'name' => 'Bro'}`, `{'id' => 1}`, etc.
+`:method` - `:get`, `:post`, `:put` (defaults to :get)
+`:verify_content` - `true`, `false`
 
 ## With RSpec
 
@@ -63,24 +73,34 @@ describe 'DVR verification' do
   describe 'API responses' do
 
     it 'returns expected responses' do
-      verify_dvr 'root', url: '/'
-      verify_dvr 'some_form', url: '/some-form'
-      # ...continue through all routes
+      # Will follow and verify all links recursively
+      verify_all_dvr 'root', url: '/'
     end
 
   end
 
   describe 'Actions' do
 
-    it 'returns expected responses' do
+    it 'post_to_some_form' do
       verify_dvr 'post-to-some-form',
                  url: '/post-to-some-form',
                  params: {'id' => 1},
                  method: :post
-      # ...continue through all actions
     end
 
+    it 'get_something' do
+      verify_dvr 'get_something',
+                 url: '/get_something'
+    end
+
+    # ...continue through all actions
   end
 
 end
 ```
+
+## Verifying Content
+
+By default, `verify_dvr` will only check that all keys remain unchanged. If you are testing, say, a form, and need to ensure that the entirety of the content is unchanged, pass the `verify_content: true` option.
+
+In most cases this is unnecessary with `verify_all_dvr`, as it will automatically verify_content any time it encounters a form.
