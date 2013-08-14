@@ -14,7 +14,12 @@ module DVR
 
     RSpec.configure do |c|
       c.after(:suite) do
-        puts DVR.after_test_message
+        # If user has passed arguments limiting tests to specific files/tests,
+        # inclusion_filter will not be empty.
+        # We only want this message if they're running the entire suite.
+        if RSpec.configuration.inclusion_filter.empty?
+          puts DVR.after_test_message
+        end
       end
     end
 
